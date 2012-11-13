@@ -42,10 +42,63 @@ namespace Beinet.cn.RegexTool
             txtOld.DetectUrls = false;
 
             #region 添加常用正则
-            ToolStripMenuItem menu = new ToolStripMenuItem("文件名");
+            ToolStripMenuItem menu;
+            //menu.Size = new System.Drawing.Size(152, 22);
+            menu = new ToolStripMenuItem("替换为科学计数法");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.ToolTipText = ",";        // 用于标识替换文本
+            menu.Tag = @"(?<=\d)(?=(?:\d{3})+(?!\d))";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("保留3位小数");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.ToolTipText = "$1";       // 用于标识替换文本
+            menu.Tag = @"(\.\d\d(?>[1-9]?))\d+";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("双引号内容");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.Tag = @"(?>([^""]|\\.)*)";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("HTML标签");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.Tag = @"<(""[^""]*""|'[^']*'|[^'"">])*>";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("最内层DIV标签");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.Tag = @"<div[^>]*>(?:(?!<div).)*?</div>";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("最外层DIV标签");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.Tag = @"<div>((?<o><div>)|(?<-o></div>)|(?:(?!</?div)[\s\S]))*(?(o)(?!))</div>";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("A标签的href");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.Tag = @"<a\s[^>]*href=(['""])?(?(1)((?:(?!\1).)*)\1|([^\s>]*))";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("只能且必须字母数字组合6~20位");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.Tag = @"^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])[a-zA-Z0-9]{6,20}$";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("只能且必须字母数字组合6~20位");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.Tag = @"^(?:([0-9])|([a-z])|([A-Z])){6,20}(?(1)|(?!))(?(2)|(?!))(?(3)|(?!))$";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("文件名1");
+            menuRegCommon.DropDownItems.Add(menu);
+            menu.Tag = @"^[a-zA-Z]:[\\/]+(?:[^\<\>\/\\\|\:""\*\?\r\n]+[\\/]+)*[^\<\>\/\\\|\:""\*\?\r\n]*$";
+            menu.Click += menuRegCommon_Click;
+
+            menu = new ToolStripMenuItem("文件名2");
             menuRegCommon.DropDownItems.Add(menu);
             menu.Tag = @"([A-Za-z]:)\\([^/:*<>""|\\]+\\)*[^/:*<>""|\\]+";
-            //menu.Size = new System.Drawing.Size(152, 22);
             menu.Click += menuRegCommon_Click;
 
             menu = new ToolStripMenuItem("Internet网址");
@@ -736,8 +789,14 @@ namespace Beinet.cn.RegexTool
         private void menuRegCommon_Click(object sender, EventArgs e)
         {
             var menu = sender as ToolStripMenuItem;
-            if (menu == null || menu.Tag == null) return;
-            txtReg.SelectedText = menu.Tag.ToString();
+            if (menu == null || menu.Tag == null)
+                return;
+            txtReg.Text = menu.Tag.ToString();
+            if(!string.IsNullOrEmpty(menu.ToolTipText))
+            {
+                chkReplace.Checked = true;
+                txtReplace.Text = menu.ToolTipText;
+            }
         }
 
         /// <summary>
