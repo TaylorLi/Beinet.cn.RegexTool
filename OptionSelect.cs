@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -24,6 +18,7 @@ namespace Beinet.cn.RegexTool
                 return;
             }
             InitializeComponent();
+            ShowInTaskbar = false;// 不能放到OnLoad里，会导致窗体消失
 
             if(para is Regex)
             {
@@ -48,7 +43,19 @@ namespace Beinet.cn.RegexTool
                     comboBox1.Items.Add(gname);
                 }
                 comboBox1.SelectedIndex = 0;
-                return;
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            if (Owner != null)
+            {
+                Left = Owner.Left + 20;
+                Top = Owner.Top + Owner.Height - Height - 20;
+                if (Top < 0)
+                    Top = 0;
             }
         }
 
@@ -70,6 +77,12 @@ namespace Beinet.cn.RegexTool
                 button1_Click(sender, e);
                 e.Handled = true;
             }
+        }
+
+        private void OptionSelect_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                Close();
         }
     }
 }

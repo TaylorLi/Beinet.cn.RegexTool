@@ -34,12 +34,15 @@
             this.splitMain = new System.Windows.Forms.SplitContainer();
             this.split1 = new System.Windows.Forms.SplitContainer();
             this.btnGroupBy0 = new System.Windows.Forms.Button();
+            this.btnGroupBy3 = new System.Windows.Forms.Button();
+            this.btnGroupBy2 = new System.Windows.Forms.Button();
             this.btnGroupBy1 = new System.Windows.Forms.Button();
             this.btnGroupBy = new System.Windows.Forms.Button();
             this.btnExeOne = new System.Windows.Forms.Button();
             this.btnExecute = new System.Windows.Forms.Button();
             this.chkSplit = new System.Windows.Forms.CheckBox();
             this.chkReplace = new System.Windows.Forms.CheckBox();
+            this.chkComment = new System.Windows.Forms.CheckBox();
             this.chkCompiled = new System.Windows.Forms.CheckBox();
             this.chkMultiLine = new System.Windows.Forms.CheckBox();
             this.chkSingle = new System.Windows.Forms.CheckBox();
@@ -60,6 +63,7 @@
             this.group0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtResult = new System.Windows.Forms.RichTextBox();
             this.txtStatus = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.splitMain.Panel1.SuspendLayout();
             this.splitMain.Panel2.SuspendLayout();
             this.splitMain.SuspendLayout();
@@ -106,12 +110,15 @@
             // split1.Panel1
             // 
             this.split1.Panel1.Controls.Add(this.btnGroupBy0);
+            this.split1.Panel1.Controls.Add(this.btnGroupBy3);
+            this.split1.Panel1.Controls.Add(this.btnGroupBy2);
             this.split1.Panel1.Controls.Add(this.btnGroupBy1);
             this.split1.Panel1.Controls.Add(this.btnGroupBy);
             this.split1.Panel1.Controls.Add(this.btnExeOne);
             this.split1.Panel1.Controls.Add(this.btnExecute);
             this.split1.Panel1.Controls.Add(this.chkSplit);
             this.split1.Panel1.Controls.Add(this.chkReplace);
+            this.split1.Panel1.Controls.Add(this.chkComment);
             this.split1.Panel1.Controls.Add(this.chkCompiled);
             this.split1.Panel1.Controls.Add(this.chkMultiLine);
             this.split1.Panel1.Controls.Add(this.chkSingle);
@@ -122,7 +129,7 @@
             // 
             this.split1.Panel2.Controls.Add(this.txtOld);
             this.split1.Size = new System.Drawing.Size(926, 333);
-            this.split1.SplitterDistance = 120;
+            this.split1.SplitterDistance = 135;
             this.split1.SplitterWidth = 1;
             this.split1.TabIndex = 0;
             this.split1.TabStop = false;
@@ -130,21 +137,43 @@
             // btnGroupBy0
             // 
             this.btnGroupBy0.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGroupBy0.Location = new System.Drawing.Point(647, 97);
+            this.btnGroupBy0.Location = new System.Drawing.Point(451, 111);
             this.btnGroupBy0.Name = "btnGroupBy0";
             this.btnGroupBy0.Size = new System.Drawing.Size(91, 23);
-            this.btnGroupBy0.TabIndex = 2;
+            this.btnGroupBy0.TabIndex = 11;
             this.btnGroupBy0.Text = "统计整个匹配";
             this.btnGroupBy0.UseVisualStyleBackColor = true;
             this.btnGroupBy0.Click += new System.EventHandler(this.btnGroupBy_Click);
             // 
+            // btnGroupBy3
+            // 
+            this.btnGroupBy3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGroupBy3.Location = new System.Drawing.Point(718, 111);
+            this.btnGroupBy3.Name = "btnGroupBy3";
+            this.btnGroupBy3.Size = new System.Drawing.Size(67, 23);
+            this.btnGroupBy3.TabIndex = 14;
+            this.btnGroupBy3.Text = "统计分组3";
+            this.btnGroupBy3.UseVisualStyleBackColor = true;
+            this.btnGroupBy3.Click += new System.EventHandler(this.btnGroupBy_Click);
+            // 
+            // btnGroupBy2
+            // 
+            this.btnGroupBy2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGroupBy2.Location = new System.Drawing.Point(637, 111);
+            this.btnGroupBy2.Name = "btnGroupBy2";
+            this.btnGroupBy2.Size = new System.Drawing.Size(67, 23);
+            this.btnGroupBy2.TabIndex = 13;
+            this.btnGroupBy2.Text = "统计分组2";
+            this.btnGroupBy2.UseVisualStyleBackColor = true;
+            this.btnGroupBy2.Click += new System.EventHandler(this.btnGroupBy_Click);
+            // 
             // btnGroupBy1
             // 
             this.btnGroupBy1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGroupBy1.Location = new System.Drawing.Point(744, 97);
+            this.btnGroupBy1.Location = new System.Drawing.Point(556, 111);
             this.btnGroupBy1.Name = "btnGroupBy1";
             this.btnGroupBy1.Size = new System.Drawing.Size(67, 23);
-            this.btnGroupBy1.TabIndex = 3;
+            this.btnGroupBy1.TabIndex = 12;
             this.btnGroupBy1.Text = "统计分组1";
             this.btnGroupBy1.UseVisualStyleBackColor = true;
             this.btnGroupBy1.Click += new System.EventHandler(this.btnGroupBy_Click);
@@ -152,73 +181,80 @@
             // btnGroupBy
             // 
             this.btnGroupBy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGroupBy.Location = new System.Drawing.Point(817, 97);
+            this.btnGroupBy.Location = new System.Drawing.Point(799, 112);
             this.btnGroupBy.Name = "btnGroupBy";
             this.btnGroupBy.Size = new System.Drawing.Size(106, 23);
-            this.btnGroupBy.TabIndex = 4;
+            this.btnGroupBy.TabIndex = 15;
             this.btnGroupBy.Text = "选择分组并统计";
             this.btnGroupBy.UseVisualStyleBackColor = true;
             this.btnGroupBy.Click += new System.EventHandler(this.btnGroupBy_Click);
             // 
             // btnExeOne
             // 
-            this.btnExeOne.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExeOne.Location = new System.Drawing.Point(475, 97);
+            this.btnExeOne.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExeOne.Location = new System.Drawing.Point(12, 111);
             this.btnExeOne.Name = "btnExeOne";
             this.btnExeOne.Size = new System.Drawing.Size(80, 23);
-            this.btnExeOne.TabIndex = 0;
+            this.btnExeOne.TabIndex = 9;
             this.btnExeOne.Text = "逐一匹配";
             this.btnExeOne.UseVisualStyleBackColor = true;
             this.btnExeOne.Click += new System.EventHandler(this.btnExeOne_Click);
             // 
             // btnExecute
             // 
-            this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExecute.Location = new System.Drawing.Point(561, 97);
+            this.btnExecute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExecute.Location = new System.Drawing.Point(113, 111);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(80, 23);
-            this.btnExecute.TabIndex = 1;
+            this.btnExecute.TabIndex = 10;
             this.btnExecute.Text = "全部匹配";
             this.btnExecute.UseVisualStyleBackColor = true;
             this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
             // 
             // chkSplit
             // 
-            this.chkSplit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkSplit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkSplit.AutoSize = true;
-            this.chkSplit.Location = new System.Drawing.Point(397, 98);
+            this.chkSplit.Location = new System.Drawing.Point(832, 89);
             this.chkSplit.Name = "chkSplit";
             this.chkSplit.Size = new System.Drawing.Size(72, 16);
-            this.chkSplit.TabIndex = 0;
-            this.chkSplit.TabStop = false;
+            this.chkSplit.TabIndex = 8;
             this.chkSplit.Text = "分割模式";
             this.chkSplit.UseVisualStyleBackColor = true;
             this.chkSplit.CheckedChanged += new System.EventHandler(this.chkReplace_CheckedChanged);
             // 
             // chkReplace
             // 
-            this.chkReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkReplace.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.chkReplace.AutoSize = true;
-            this.chkReplace.Location = new System.Drawing.Point(327, 98);
+            this.chkReplace.Location = new System.Drawing.Point(744, 89);
             this.chkReplace.Name = "chkReplace";
             this.chkReplace.Size = new System.Drawing.Size(72, 16);
-            this.chkReplace.TabIndex = 0;
-            this.chkReplace.TabStop = false;
+            this.chkReplace.TabIndex = 7;
             this.chkReplace.Text = "替换模式";
             this.chkReplace.UseVisualStyleBackColor = true;
             this.chkReplace.CheckedChanged += new System.EventHandler(this.chkReplace_CheckedChanged);
+            // 
+            // chkComment
+            // 
+            this.chkComment.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkComment.AutoSize = true;
+            this.chkComment.Location = new System.Drawing.Point(336, 89);
+            this.chkComment.Name = "chkComment";
+            this.chkComment.Size = new System.Drawing.Size(72, 16);
+            this.chkComment.TabIndex = 6;
+            this.chkComment.Text = "注释模式";
+            this.chkComment.UseVisualStyleBackColor = true;
+            this.chkComment.CheckedChanged += new System.EventHandler(this.EnvironmentChanged);
             // 
             // chkCompiled
             // 
             this.chkCompiled.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkCompiled.AutoSize = true;
-            this.chkCompiled.Checked = true;
-            this.chkCompiled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkCompiled.Location = new System.Drawing.Point(249, 98);
+            this.chkCompiled.Location = new System.Drawing.Point(258, 89);
             this.chkCompiled.Name = "chkCompiled";
             this.chkCompiled.Size = new System.Drawing.Size(72, 16);
-            this.chkCompiled.TabIndex = 0;
-            this.chkCompiled.TabStop = false;
+            this.chkCompiled.TabIndex = 5;
             this.chkCompiled.Text = "编译模式";
             this.chkCompiled.UseVisualStyleBackColor = true;
             this.chkCompiled.CheckedChanged += new System.EventHandler(this.EnvironmentChanged);
@@ -227,11 +263,10 @@
             // 
             this.chkMultiLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkMultiLine.AutoSize = true;
-            this.chkMultiLine.Location = new System.Drawing.Point(171, 98);
+            this.chkMultiLine.Location = new System.Drawing.Point(180, 89);
             this.chkMultiLine.Name = "chkMultiLine";
             this.chkMultiLine.Size = new System.Drawing.Size(72, 16);
-            this.chkMultiLine.TabIndex = 0;
-            this.chkMultiLine.TabStop = false;
+            this.chkMultiLine.TabIndex = 4;
             this.chkMultiLine.Text = "多行模式";
             this.chkMultiLine.UseVisualStyleBackColor = true;
             this.chkMultiLine.CheckedChanged += new System.EventHandler(this.EnvironmentChanged);
@@ -240,11 +275,10 @@
             // 
             this.chkSingle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkSingle.AutoSize = true;
-            this.chkSingle.Location = new System.Drawing.Point(93, 98);
+            this.chkSingle.Location = new System.Drawing.Point(102, 89);
             this.chkSingle.Name = "chkSingle";
             this.chkSingle.Size = new System.Drawing.Size(72, 16);
-            this.chkSingle.TabIndex = 0;
-            this.chkSingle.TabStop = false;
+            this.chkSingle.TabIndex = 3;
             this.chkSingle.Text = "单行模式";
             this.chkSingle.UseVisualStyleBackColor = true;
             this.chkSingle.CheckedChanged += new System.EventHandler(this.EnvironmentChanged);
@@ -253,11 +287,10 @@
             // 
             this.chkIgnoreCase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.chkIgnoreCase.AutoSize = true;
-            this.chkIgnoreCase.Location = new System.Drawing.Point(3, 98);
+            this.chkIgnoreCase.Location = new System.Drawing.Point(12, 89);
             this.chkIgnoreCase.Name = "chkIgnoreCase";
             this.chkIgnoreCase.Size = new System.Drawing.Size(84, 16);
-            this.chkIgnoreCase.TabIndex = 0;
-            this.chkIgnoreCase.TabStop = false;
+            this.chkIgnoreCase.TabIndex = 2;
             this.chkIgnoreCase.Text = "忽略大小写";
             this.chkIgnoreCase.UseVisualStyleBackColor = true;
             this.chkIgnoreCase.CheckedChanged += new System.EventHandler(this.EnvironmentChanged);
@@ -275,8 +308,8 @@
             this.txtReg.Name = "txtReg";
             this.txtReg.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
             this.txtReg.ShowSelectionMargin = true;
-            this.txtReg.Size = new System.Drawing.Size(920, 88);
-            this.txtReg.TabIndex = 5;
+            this.txtReg.Size = new System.Drawing.Size(920, 80);
+            this.txtReg.TabIndex = 1;
             this.txtReg.Text = "";
             this.txtReg.WordWrap = false;
             this.txtReg.TextChanged += new System.EventHandler(this.TextBoxChanged);
@@ -345,8 +378,8 @@
             this.txtOld.Name = "txtOld";
             this.txtOld.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
             this.txtOld.ShowSelectionMargin = true;
-            this.txtOld.Size = new System.Drawing.Size(926, 212);
-            this.txtOld.TabIndex = 6;
+            this.txtOld.Size = new System.Drawing.Size(926, 197);
+            this.txtOld.TabIndex = 16;
             this.txtOld.Text = "";
             this.txtOld.WordWrap = false;
             this.txtOld.TextChanged += new System.EventHandler(this.TextBoxChanged);
@@ -387,8 +420,7 @@
             this.txtReplace.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
             this.txtReplace.ShowSelectionMargin = true;
             this.txtReplace.Size = new System.Drawing.Size(926, 0);
-            this.txtReplace.TabIndex = 0;
-            this.txtReplace.TabStop = false;
+            this.txtReplace.TabIndex = 17;
             this.txtReplace.Text = "";
             this.txtReplace.WordWrap = false;
             this.txtReplace.TextChanged += new System.EventHandler(this.TextBoxChanged);
@@ -456,8 +488,7 @@
             this.txtResult.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
             this.txtResult.ShowSelectionMargin = true;
             this.txtResult.Size = new System.Drawing.Size(926, 348);
-            this.txtResult.TabIndex = 0;
-            this.txtResult.TabStop = false;
+            this.txtResult.TabIndex = 18;
             this.txtResult.Text = "";
             this.txtResult.WordWrap = false;
             this.txtResult.Enter += new System.EventHandler(this.txt_Enter);
@@ -473,6 +504,14 @@
             this.txtStatus.Size = new System.Drawing.Size(926, 14);
             this.txtStatus.TabIndex = 0;
             this.txtStatus.TabStop = false;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.AutomaticDelay = 100;
+            this.toolTip1.AutoPopDelay = 10000;
+            this.toolTip1.InitialDelay = 100;
+            this.toolTip1.ReshowDelay = 20;
+            this.toolTip1.ShowAlways = true;
             // 
             // MainForm
             // 
@@ -536,6 +575,10 @@
         private System.Windows.Forms.Button btnGroupBy1;
         private System.Windows.Forms.Button btnExeOne;
         private System.Windows.Forms.CheckBox chkSplit;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox chkComment;
+        private System.Windows.Forms.Button btnGroupBy3;
+        private System.Windows.Forms.Button btnGroupBy2;
     }
 }
 

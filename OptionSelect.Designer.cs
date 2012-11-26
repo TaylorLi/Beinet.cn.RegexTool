@@ -59,8 +59,10 @@
             this.ClientSize = new System.Drawing.Size(292, 47);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.comboBox1);
+            this.KeyPreview = true;
             this.Name = "OptionSelect";
             this.Text = "OptionSelect";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OptionSelect_KeyDown);
             this.ResumeLayout(false);
 
         }

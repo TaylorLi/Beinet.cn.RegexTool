@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -13,6 +9,8 @@ namespace Beinet.cn.RegexTool
 {
     public partial class MainForm : Form
     {
+        private static string _version = "1.0 by youbl";
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -126,10 +124,22 @@ namespace Beinet.cn.RegexTool
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            Text += _version;
+            
             txtReg.AutoWordSelection = false;
             txtReplace.AutoWordSelection = false;
             txtResult.AutoWordSelection = false;
             txtOld.AutoWordSelection = false;
+
+            toolTip1.SetToolTip(chkIgnoreCase, "启用RegexOptions.IgnoreCase");
+            toolTip1.SetToolTip(chkSingle, "启用RegexOptions.Singleline");
+            toolTip1.SetToolTip(chkMultiLine, "启用RegexOptions.Multiline");
+            toolTip1.SetToolTip(chkCompiled, "启用RegexOptions.Compiled"); 
+            toolTip1.SetToolTip(chkComment, "启用RegexOptions.IgnorePatternWhitespace");
+
+            toolTip1.SetToolTip(chkReplace, "用正则进行替换");
+            toolTip1.SetToolTip(chkSplit, "用正则对要匹配的文本进行Split分割");
+
         }
 
         #region 字段与属性
@@ -189,6 +199,8 @@ namespace Beinet.cn.RegexTool
                     ret |= RegexOptions.Multiline;
                 if (chkSingle.Checked)
                     ret |= RegexOptions.Singleline;
+                if (chkComment.Checked)
+                    ret |= RegexOptions.IgnorePatternWhitespace;
                 return ret;
             }
         }
@@ -240,6 +252,8 @@ namespace Beinet.cn.RegexTool
         private void txt_Enter(object sender, EventArgs e)
         {
             var txt = sender as TextBoxBase;
+            if (txt == null)
+                return;
             var tip = GetTxtToolTip(txt);
 
             if (string.IsNullOrEmpty(tip) || (!string.IsNullOrEmpty(txt.Text) && txt.Text != tip))
@@ -333,6 +347,8 @@ namespace Beinet.cn.RegexTool
             EnvironmentChanged(sender, e);
 
             var chk = sender as CheckBox;
+            if (chk == null)
+                return;
             if (sender == chkReplace)
             {
                 if (chk.Checked)
@@ -527,7 +543,7 @@ namespace Beinet.cn.RegexTool
                 #region 显示到DataGridView中
                 dgvResult.Columns.Add("group0", "分割结果");
                 dgvResult.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-                foreach (var s in arr)
+                foreach (string s in arr)
                 {
                     dgvResult.Rows.Add(s);
                 }
@@ -618,6 +634,26 @@ namespace Beinet.cn.RegexTool
                 group = 1;
                 groupOption = "分组1";
             }
+            else if (sender == btnGroupBy2)
+            {
+                if (groupLen <= 2)
+                {
+                    MessageBox.Show("不存在分组2");
+                    return;
+                }
+                group = 2;
+                groupOption = "分组2";
+            }
+            else if (sender == btnGroupBy3)
+            {
+                if (groupLen <= 3)
+                {
+                    MessageBox.Show("不存在分组3");
+                    return;
+                }
+                group = 3;
+                groupOption = "分组3";
+            }
             else if (groupLen == 1 || sender == btnGroupBy0)
             {
                 group = 0;
@@ -688,7 +724,7 @@ namespace Beinet.cn.RegexTool
         }
         #endregion
 
-        void SetResult(string txt, Match mt = null, int length = 0, int matchTime = 0)
+        void SetResult(string txt, Match mt = null, int length = 0)
         {
             txtResult.Visible = true;
             dgvResult.Visible = false;
@@ -717,7 +753,8 @@ namespace Beinet.cn.RegexTool
             if (row < 0) return;    // 点击标题了
             var dgvRow = dgvResult.Rows[row];
             var mat = dgvRow.Tag as Match;
-            
+            if (mat == null)
+                return;
             int start, len;
             if(col > 0)
             {
@@ -740,6 +777,8 @@ namespace Beinet.cn.RegexTool
         private void dgvResult_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             var dgv = sender as DataGridView;
+            if (dgv == null)
+                return;
             for (int i = 0; i < e.RowCount; i++)
             {
                 dgv.Rows[e.RowIndex + i].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -755,6 +794,8 @@ namespace Beinet.cn.RegexTool
         private void dataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             var dgv = sender as DataGridView;
+            if (dgv == null)
+                return;
             for (int i = 0; i < e.RowCount && i < dgv.Rows.Count; i++)
             {
                 dgv.Rows[e.RowIndex + i].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
