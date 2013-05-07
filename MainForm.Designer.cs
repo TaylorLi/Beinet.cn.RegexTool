@@ -54,6 +54,8 @@
             this.menuRegParse = new System.Windows.Forms.ToolStripMenuItem();
             this.menuRegDel = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mnuSaveReg = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuRegCommon = new System.Windows.Forms.ToolStripMenuItem();
             this.txtOld = new System.Windows.Forms.RichTextBox();
             this.split2 = new System.Windows.Forms.SplitContainer();
@@ -64,6 +66,7 @@
             this.txtResult = new System.Windows.Forms.RichTextBox();
             this.txtStatus = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.menuRegSave = new System.Windows.Forms.ToolStripMenuItem();
             this.splitMain.Panel1.SuspendLayout();
             this.splitMain.Panel2.SuspendLayout();
             this.splitMain.SuspendLayout();
@@ -324,47 +327,62 @@
             this.menuRegParse,
             this.menuRegDel,
             this.toolStripSeparator1,
-            this.menuRegCommon});
+            this.mnuSaveReg,
+            this.toolStripSeparator2,
+            this.menuRegCommon,
+            this.menuRegSave});
             this.menuReg.Name = "menuReg";
-            this.menuReg.Size = new System.Drawing.Size(143, 120);
+            this.menuReg.Size = new System.Drawing.Size(161, 192);
             // 
             // menuRegCut
             // 
             this.menuRegCut.Name = "menuRegCut";
-            this.menuRegCut.Size = new System.Drawing.Size(142, 22);
+            this.menuRegCut.Size = new System.Drawing.Size(160, 22);
             this.menuRegCut.Text = "剪切";
             this.menuRegCut.Click += new System.EventHandler(this.menuReg_Click);
             // 
             // menuRegCopy
             // 
             this.menuRegCopy.Name = "menuRegCopy";
-            this.menuRegCopy.Size = new System.Drawing.Size(142, 22);
+            this.menuRegCopy.Size = new System.Drawing.Size(160, 22);
             this.menuRegCopy.Text = "复制";
             this.menuRegCopy.Click += new System.EventHandler(this.menuReg_Click);
             // 
             // menuRegParse
             // 
             this.menuRegParse.Name = "menuRegParse";
-            this.menuRegParse.Size = new System.Drawing.Size(142, 22);
+            this.menuRegParse.Size = new System.Drawing.Size(160, 22);
             this.menuRegParse.Text = "粘贴";
             this.menuRegParse.Click += new System.EventHandler(this.menuReg_Click);
             // 
             // menuRegDel
             // 
             this.menuRegDel.Name = "menuRegDel";
-            this.menuRegDel.Size = new System.Drawing.Size(142, 22);
+            this.menuRegDel.Size = new System.Drawing.Size(160, 22);
             this.menuRegDel.Text = "删除";
             this.menuRegDel.Click += new System.EventHandler(this.menuReg_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(139, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(157, 6);
+            // 
+            // mnuSaveReg
+            // 
+            this.mnuSaveReg.Name = "mnuSaveReg";
+            this.mnuSaveReg.Size = new System.Drawing.Size(160, 22);
+            this.mnuSaveReg.Text = "保存正则...";
+            this.mnuSaveReg.Click += new System.EventHandler(this.mnuSaveReg_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(157, 6);
             // 
             // menuRegCommon
             // 
             this.menuRegCommon.Name = "menuRegCommon";
-            this.menuRegCommon.Size = new System.Drawing.Size(142, 22);
+            this.menuRegCommon.Size = new System.Drawing.Size(160, 22);
             this.menuRegCommon.Text = "插入常用正则";
             // 
             // txtOld
@@ -513,6 +531,12 @@
             this.toolTip1.ReshowDelay = 20;
             this.toolTip1.ShowAlways = true;
             // 
+            // menuRegSave
+            // 
+            this.menuRegSave.Name = "menuRegSave";
+            this.menuRegSave.Size = new System.Drawing.Size(160, 22);
+            this.menuRegSave.Text = "插入自定义正则";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -579,6 +603,9 @@
         private System.Windows.Forms.CheckBox chkComment;
         private System.Windows.Forms.Button btnGroupBy3;
         private System.Windows.Forms.Button btnGroupBy2;
+        private System.Windows.Forms.ToolStripMenuItem mnuSaveReg;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem menuRegSave;
     }
 }
 

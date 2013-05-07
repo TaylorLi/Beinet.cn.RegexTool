@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -10,7 +12,8 @@ namespace Beinet.cn.RegexTool
     public partial class MainForm : Form
     {
         private static string _version = "1.0 by youbl";
-
+        private static readonly string _regFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "reg.txt");
+        private const char SAVEREGSPLIT = 'ǒ';
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -38,8 +41,41 @@ namespace Beinet.cn.RegexTool
             // 不是焦点时，也允许突出显示选中项
             txtOld.HideSelection = false;
             txtOld.DetectUrls = false;
+        }
 
-            #region 添加常用正则
+        /// <summary>
+        /// RichTextBox的AutoWordSelection设置，必须在OnLoad里设置才生效
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            Text += _version;
+            
+            txtReg.AutoWordSelection = false;
+            txtReplace.AutoWordSelection = false;
+            txtResult.AutoWordSelection = false;
+            txtOld.AutoWordSelection = false;
+
+            toolTip1.SetToolTip(chkIgnoreCase, "启用RegexOptions.IgnoreCase");
+            toolTip1.SetToolTip(chkSingle, "启用RegexOptions.Singleline");
+            toolTip1.SetToolTip(chkMultiLine, "启用RegexOptions.Multiline");
+            toolTip1.SetToolTip(chkCompiled, "启用RegexOptions.Compiled"); 
+            toolTip1.SetToolTip(chkComment, "启用RegexOptions.IgnorePatternWhitespace");
+
+            toolTip1.SetToolTip(chkReplace, "用正则进行替换");
+            toolTip1.SetToolTip(chkSplit, "用正则对要匹配的文本进行Split分割");
+
+            // 添加常用正则
+            AddCommonReg();
+
+            // 添加常用正则
+            AddSaveReg();
+        }
+
+        // 添加常用正则
+        void AddCommonReg()
+        {
             ToolStripMenuItem menu;
             //menu.Size = new System.Drawing.Size(152, 22);
             menu = new ToolStripMenuItem("替换为科学计数法");
@@ -113,33 +149,35 @@ namespace Beinet.cn.RegexTool
             menuRegCommon.DropDownItems.Add(menu);
             menu.Tag = @"((25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)\.){3}(25[0-5]|2[0-4]\d|1\d\d|[1-9]\d|\d)";
             menu.Click += menuRegCommon_Click;
-
-            #endregion
         }
 
-        /// <summary>
-        /// RichTextBox的AutoWordSelection设置，必须在OnLoad里设置才生效
-        /// </summary>
-        /// <param name="e"></param>
-        protected override void OnLoad(EventArgs e)
+        // 添加保存的正则
+        void AddSaveReg()
         {
-            base.OnLoad(e);
-            Text += _version;
-            
-            txtReg.AutoWordSelection = false;
-            txtReplace.AutoWordSelection = false;
-            txtResult.AutoWordSelection = false;
-            txtOld.AutoWordSelection = false;
+            menuRegSave.DropDownItems.Clear();
 
-            toolTip1.SetToolTip(chkIgnoreCase, "启用RegexOptions.IgnoreCase");
-            toolTip1.SetToolTip(chkSingle, "启用RegexOptions.Singleline");
-            toolTip1.SetToolTip(chkMultiLine, "启用RegexOptions.Multiline");
-            toolTip1.SetToolTip(chkCompiled, "启用RegexOptions.Compiled"); 
-            toolTip1.SetToolTip(chkComment, "启用RegexOptions.IgnorePatternWhitespace");
-
-            toolTip1.SetToolTip(chkReplace, "用正则进行替换");
-            toolTip1.SetToolTip(chkSplit, "用正则对要匹配的文本进行Split分割");
-
+            ToolStripMenuItem menu;
+            if (File.Exists(_regFile))
+            {
+                using (var sr = new StreamReader(_regFile, Encoding.UTF8))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+                        if (string.IsNullOrEmpty(line))
+                            continue;
+                        int idx = line.IndexOf(SAVEREGSPLIT);
+                        if (idx < 1 || idx == line.Length - 1)
+                            continue;
+                        string name = line.Substring(0, idx);
+                        string reg = line.Substring(idx + 1);
+                        menu = new ToolStripMenuItem(name);
+                        menuRegSave.DropDownItems.Add(menu);
+                        menu.Tag = reg;
+                        menu.Click += menuRegCommon_Click;
+                    }
+                }
+            }
         }
 
         #region 字段与属性
@@ -620,7 +658,8 @@ namespace Beinet.cn.RegexTool
             if (reg == null)
                 return;
 
-            int group;
+            List<int> groups = new List<int>();
+            string spliter = string.Empty;
             string groupOption;
             var groupLen = reg.GetGroupNumbers().Length;
             // 没有分组时，按整个匹配分组
@@ -631,7 +670,7 @@ namespace Beinet.cn.RegexTool
                     MessageBox.Show("不存在分组1");
                     return;
                 }
-                group = 1;
+                groups.Add(1);
                 groupOption = "分组1";
             }
             else if (sender == btnGroupBy2)
@@ -641,7 +680,7 @@ namespace Beinet.cn.RegexTool
                     MessageBox.Show("不存在分组2");
                     return;
                 }
-                group = 2;
+                groups.Add(2);
                 groupOption = "分组2";
             }
             else if (sender == btnGroupBy3)
@@ -651,12 +690,12 @@ namespace Beinet.cn.RegexTool
                     MessageBox.Show("不存在分组3");
                     return;
                 }
-                group = 3;
+                groups.Add(3);
                 groupOption = "分组3";
             }
             else if (groupLen == 1 || sender == btnGroupBy0)
             {
-                group = 0;
+                groups.Add(0);
                 groupOption = "整个匹配";
             }
             else
@@ -666,15 +705,21 @@ namespace Beinet.cn.RegexTool
                 if (opn.IsDisposed)
                     return;
 
-                opn.ShowDialog();
-                groupOption = opn.ret as string;
+                opn.ShowDialog(this);
+                groupOption = opn.ret;
                 if (string.IsNullOrEmpty(groupOption))
                     return;
 
                 #endregion
 
                 var mg = Regex.Match(groupOption, @"\d+");
-                group = mg.Success ? int.Parse(mg.Value) : 0;
+                while(mg.Success)
+                {
+                    groups.Add(int.Parse(mg.Value));
+                    mg = mg.NextMatch();
+                }
+                spliter = opn.spliter;
+                groupOption = "分组" + groupOption + "(分隔符" + spliter + ")";
             }
             Mat = reg.Match(txtOld.Text);
             if(!Mat.Success)
@@ -686,7 +731,13 @@ namespace Beinet.cn.RegexTool
             var ret = new SortedList<string, int>();
             while (Mat.Success)
             {
-                var val = Mat.Groups[group].Value;
+                string val = string.Empty;
+                foreach (int gp in groups)
+                {
+                    val += spliter + Mat.Groups[gp].Value;
+                }
+                if (val != string.Empty && !string.IsNullOrEmpty(spliter))
+                    val = val.Substring(spliter.Length);// 移除最前的分隔符
                 if (ret.ContainsKey(val))
                     ret[val]++;
                 else
@@ -809,6 +860,7 @@ namespace Beinet.cn.RegexTool
         }
         #endregion
 
+        #region 菜单事件
         /// <summary>
         /// 复制粘贴相关菜单
         /// </summary>
@@ -840,6 +892,29 @@ namespace Beinet.cn.RegexTool
             }
         }
 
+        private void mnuSaveReg_Click(object sender, EventArgs e)
+        {
+            if (RegObj == null)
+            {
+                return;
+            }
+
+            string name = Microsoft.VisualBasic.Interaction.InputBox(
+                "请输入快捷方式名", "请输入快捷方式名", "", 100, 100);
+            if (name == null || (name = name.Trim()) == string.Empty)
+                return;
+
+            string save = txtReg.Text;
+            using(var sw = new StreamWriter(_regFile, true, Encoding.UTF8))
+            {
+                sw.WriteLine(name + SAVEREGSPLIT + save);
+            }
+            // 重新绑定自定义正则
+            AddSaveReg();
+            MessageBox.Show("保存成功");
+        }
+        #endregion
+
         /// <summary>
         /// 环境变化，导致匹配要重新开始
         /// </summary>
@@ -862,6 +937,7 @@ namespace Beinet.cn.RegexTool
                 }
             }
         }
+
 
 
     }
